@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <link rel="stylesheet" href="{% static 'bootstrap-3.4.1/css/bootstrap.css' %}">
+
+</head>
+<body>
+<div class="container">
+    <ul style="margin-top: 10px" class="nav nav-pills ">
+        <li class="active"><a href="/home/">首页</a></li>
+        <li class="active"><a href="/symmetric_encrypt/">对称加密/编码</a></li>
+        <li class="active"><a href="/asymmetric_encrypt/">非对称加密</a></li>
+        <li class="active"><a href="/hash/">哈希</a></li>
+    </ul>
+
+    {% block content %}
+    {% endblock %}
+</div>
+
+{% block js %}
+{% endblock %}
+
+<script scr="{% static 'jquery-2.2.4.js' %}"></script>
+<script scr="{% static 'bootstrap-3.4.1/js/bootstrap.js' %}"></script>
+</body>
+
+</html>

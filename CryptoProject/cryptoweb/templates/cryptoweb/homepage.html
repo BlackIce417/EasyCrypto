@@ -1,0 +1,19 @@
+{% extends "cryptoweb/layout.html" %}
+
+{% block content %}
+    <div class="content_style">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-danger">主要功能</li>
+            <li class="list-group-item list-group-item-info">对称密码 / 编码</li>
+            <li class="list-group-item list-group-item-info">非对称密码</li>
+            <li class="list-group-item list-group-item-info">HASH计算</li>
+        </ul>
+    </div>
+
+    <style>
+        .content_style {
+            margin-top: 10px;
+            width: calc(20% - 2px)
+        }
+    </style>
+{% endblock %}

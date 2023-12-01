@@ -1,0 +1,90 @@
+{% extends "cryptoweb/layout.html" %}
+
+{% block content %}
+    <form method="post" action="#">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div style="margin-top: 5px;">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="dropdown" onchange="isDisplayAESMODE()">
+                    <select id="encrypt_algm" class="form-control" name="algm">
+                        {#                    <option>算法</option>#}
+                        {% for row in method_list %}
+                            <option {% if form.algm == row %}selected{% endif %}>{{ row }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+                <li role="presentation" class="dropdown">
+                    <select class="form-control" name="ops">
+                        <option value="1">加密</option>
+                        <option value="2">解密</option>
+                    </select>
+                </li>
+                <li id="aes_mode_li" role="presentation" class="dropdown">
+                    <select id="aes_mode" class="form-control" name="ops">
+                        <option value="1">CBC</option>
+                        <option value="2">ECB</option>
+                    </select>
+                </li>
+            </ul>
+        </div>
+        <div style="margin-top: 20px">
+            <div class="input-group text_block_style">
+                <label class="text-dark">Input</label>
+                <textarea id="input_text" name="input_text" type="text"
+                          class="form-control text_style">{{ form.input_text|default_if_none:"" }}</textarea>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon" id="sizing-addon2">Key</span>
+                <input type="text" name="key" class="form-control" placeholder="input key if necessary"
+                       aria-describedby="sizing-addon2">
+                <span class="input-group-addon" id="sizing-addon2">IV</span>
+                <input type="text" name="iv" class="form-control" placeholder="input iv if necessary"
+                       aria-describedby="sizing-addon2">
+            </div>
+            <div style="margin-top: 20px;" class="input-group text_block_style" id="output">
+                <label class="text-dark">Output</label><br>
+                <textarea id="output_text" name="output_text" type="text"
+                          class="form-control text_style">{{ output|default_if_none:"" }}</textarea>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default">提交</button>
+    </form>
+    <style>
+        .text_block_style {
+            height: 200px;
+            width: 100%;
+        }
+
+        .text_style {
+            overflow: auto;
+            word-break: break-all;
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    <script>
+        window.onload = function () {
+            div_height = document.querySelector(".text_block_style");
+            computedStyle = window.getComputedStyle(div_height);
+            height = computedStyle.height;
+            document.getElementById("input_text").style.height = (parseInt(height) * 0.75) + "px";
+            document.getElementById("output_text").style.height = (parseInt(height) * 0.75) + "px";
+            isDisplayAESMODE()
+        }
+        {#console.log(height)#}
+
+        function isDisplayAESMODE() {
+            var controller_selection = document.getElementById("encrypt_algm")
+            var controller_option = controller_selection.options[controller_selection.selectedIndex]
+            var controller = controller_option.text
+            var targetlabel = document.getElementById("aes_mode_li")
+            if (controller == "AES") {
+                targetlabel.style.display = "list-item"
+            } else {
+                targetlabel.style.display = "none"
+            }
+        }
+    </script>
+{% endblock %}
