@@ -24,6 +24,9 @@
                     <select id="aes_mode" class="form-control" name="ops">
                         <option value="1">CBC</option>
                         <option value="2">ECB</option>
+                        <option value="2">CTR</option>
+                        <option value="2">OFB</option>
+                        <option value="2">CFB</option>
                     </select>
                 </li>
             </ul>
@@ -36,11 +39,13 @@
             </div>
             <div class="input-group">
                 <span class="input-group-addon" id="sizing-addon2">Key</span>
-                <input type="text" name="key" class="form-control" placeholder="input key if necessary"
-                       aria-describedby="sizing-addon2">
+                <input type="text" name="key" class="form-control"
+                       placeholder="{{ form.input_text|default_if_none:"input key if necessary" }}"
+                               aria-describedby="sizing-addon2">
                 <span class="input-group-addon" id="sizing-addon2">IV</span>
-                <input type="text" name="iv" class="form-control" placeholder="input iv if necessary"
-                       aria-describedby="sizing-addon2">
+                <input type="text" name="iv" class="form-control"
+                       placeholder="{{ form.input_text|default_if_none:"input iv if necessary" }}"
+                               aria-describedby="sizing-addon2">
             </div>
             <div style="margin-top: 20px;" class="input-group text_block_style" id="output">
                 <label class="text-dark">Output</label><br>

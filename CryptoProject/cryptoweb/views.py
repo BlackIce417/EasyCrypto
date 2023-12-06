@@ -32,7 +32,7 @@ class SC_OPTIONS():
 			aes = AES.new(key, AES.MODE_CBC, iv)
 			crypted_text = aes.encrypt(plain_text)
 
-			return crypted_text.decode()
+			return str(bytes_to_long(crypted_text))
 		# decrypt
 		else:
 			pass
