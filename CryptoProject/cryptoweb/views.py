@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from Crypto.Util.number import *
 from Crypto.Cipher import AES, DES
 import base64
+import os
 from hashlib import *
 
 # Create your views here.
@@ -60,21 +61,34 @@ class SC_OPTIONS():
 
 class HASH_OPTIONS():
 	def __init__(self, form_value):
-		  self.__form_value = form_value
+		self.__form_value = form_value
 
-	def __hash_ops(self):
-		plain_text = self.__form_value["input_text"]
-		hl = md5()
-		hl.update(plain_text.encode("utf-8"))
-		crypto_text = str(bytes_to_long(hl.digest()))
-		return crypto_text
+	def __hash_ops(self, obj_type):
+		if obj_type == "string":
+			plain_text = self.__form_value["input_text"]
+			hl = md5()
+			hl.update(plain_text.encode("utf-8"))
+			crypto_text = str(bytes_to_long(hl.digest()))
+			return crypto_text
+		elif obj_type == "file":
+			hl = md5()
+			file_path = self.__form_value["file_path"]
+			with open(file_path, "rb") as f:
+				file_data = f.read()
+			hl.update(file_data)
+			crypto_text = str(bytes_to_long(hl.digest()))
+			return crypto_text
 
-
-	def options(self):
+	def str_options(self):
 		algm = self.__form_value["algm"]
 		if algm == "md5":
-			return self.__hash_ops()
+			return self.__hash_ops("string")
 
+
+	def file_options(self):
+		algm = self.__form_value["algm"]
+		if algm == "md5":
+			return self.__hash_ops("file")
 
 
 def home_page(request):
@@ -109,13 +123,25 @@ def hash_calc(request):
 	if request.method == "GET":
 		return render(request, "cryptoweb/hash.html", {"hash_method": hash_method})
 	algm = request.POST.get("hash_algm")
-	input_text = request.POST.get("input_text")
+	hash_file_upload = request.FILES.get("hash_file_upload")
+	if hash_file_upload:
+		BASE_DIR = os.path.dirname(__file__)
+		target_path = os.path.join(BASE_DIR, "upload", "hash", f"{hash_file_upload.name}")
+		with open(target_path, "wb") as f:
+			for chunk in hash_file_upload.chunks():
+				f.write(chunk)
 
-	form_values = {"algm": algm, "input_text": input_text}
+		# print(f"file name : {hash_file.name}")
+		form_values = {"algm": algm, "inpu_text": None, "hash_file_upload": hash_file_upload, "file_path": target_path}
+		ho = HASH_OPTIONS(form_values)
+		res = ho.file_options()
+		return render(request, "cryptoweb/hash.html", {"hash_method": hash_method, "output": res})
+	else:
+		input_text = request.POST.get("input_text")
 
-	ho = HASH_OPTIONS(form_values)
-	res = ho.options()
+		form_values = {"algm": algm, "input_text": input_text}
 
-	return render(request, "cryptoweb/hash.html", {"hash_method": hash_method, "output": res, "form": form_values})
+		ho = HASH_OPTIONS(form_values)
+		res = ho.str_options()
 
-
+		return render(request, "cryptoweb/hash.html", {"hash_method": hash_method, "output": res, "form": form_values})

@@ -1,7 +1,7 @@
 {% extends "cryptoweb/layout.html" %}
 
 {% block content %}
-    <form method="post" action="#">
+    <form method="post" action="#" enctype="multipart/form-data">
         {% csrf_token %}
         <div style="margin-top: 5px">
             <ul class="nav nav-tabs">
@@ -17,10 +17,12 @@
             <div style="margin-top: 20px">
                 <div class="input-group text_block_style">
                     <label class="text-dark">Input</label>
+                    <span>
+                        <input type="file" id="hash_file_upload" name="hash_file_upload" >
+                    </span>
                     <textarea id="input_text" name="input_text" type="text"
                               class="form-control text_style">{{ form.input_text|default_if_none:"" }}</textarea>
                 </div>
-                <button type="button" clas="btn btn-default">选择文件</button>
                 <div style="margin-top: 20px;" class="input-group text_block_style" id="output">
                     <label class="text-dark">Output</label><br>
                     <textarea id="output_text" name="output_text" type="text"
@@ -30,7 +32,6 @@
             <button type="submit" class="btn btn-default">提交</button>
         </div>
     </form>
-
 
     <style>
         .text_block_style {
@@ -53,6 +54,7 @@
             height = computedStyle.height;
             document.getElementById("input_text").style.height = (parseInt(height) * 0.75) + "px";
             document.getElementById("output_text").style.height = (parseInt(height) * 0.75) + "px";
+
         }
     </script>
 {% endblock %}
