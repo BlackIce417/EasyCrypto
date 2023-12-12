@@ -1,5 +1,3 @@
 *.sqlite3
-CryptoProject/.idea
-CryptoProject/CryptoProject/__pycache__
-*.pyc
-*.pyc
+.idea
+__pycache__
