@@ -90,6 +90,9 @@ class HASH_OPTIONS():
 		if algm == "md5":
 			return self.__hash_ops("file")
 
+def index(request):
+	return redirect("/home")
+
 
 def home_page(request):
 	return render(request, "cryptoweb/homepage.html")

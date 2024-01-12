@@ -4,3 +4,5 @@ __pycache__/
 *.pyc
 
 CryptoProject/cryptoweb/upload/hash/*
+*.pyc
+*.pyc

@@ -19,8 +19,11 @@ from cryptoweb import views as crypto_views
 
 urlpatterns = [
 	path("admin/", admin.site.urls),
+	path("", crypto_views.index),
 	path("home/", crypto_views.home_page),
 	path("symmetric_encrypt/", crypto_views.symmetric_encrypt),
 	path("asymmetric_encrypt/", crypto_views.asymmetric_encrypt),
 	path("hash/", crypto_views.hash_calc),
 ]
+
+
